@@ -1,20 +1,27 @@
-## Ignore Visual Studio temporary files, build outputs, and user-specific files
+## Visual Studio / .NET common ignores
+# See https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
-# User-specific files
-*.user
+# User-specific
 *.suo
+*.user
 *.userosscache
 *.sln.docstates
-
-# Visual Studio directories
-.vs/
-.vscode/
 
 # Build results
 [Bb]in/
 [Oo]bj/
 out/
 artifacts/
+
+# Visual Studio Code
+.vscode/
+
+# Visual Studio
+.vs/
+
+# Rider
+.idea/
+*.sln.iml
 
 # NuGet
 *.nupkg
@@ -24,23 +31,38 @@ packages/
 project.lock.json
 project.fragment.lock.json
 
-# Rider
-.idea/
-*.iml
+# DotCover
+*.dotCover
 
 # Resharper
 _ReSharper*/
 *.ReSharper*
 
-# DotCover
-*.dotCover
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
 
-# SQL Server cache files
-*.mdf
-*.ldf
+# IIS Express
+/.vs/**/applicationhost.config
+/.vs/**/IISExpress.config
+
+# Publish directory
+publish/
+wwwroot/GeneratedFiles/
 
 # Logs
 *.log
+TestResults/
+
+# Coverage
+coverage*
+*.coverage
+*.coveragexml
+
+# Database files
+*.mdf
+*.ldf
+*.db
+*.sqlite
 
 # OS generated files
 .DS_Store
@@ -49,18 +71,16 @@ desktop.ini
 
 # Temporary files
 ~$*
-*.~* 
 *.tmp
+*.temp
 
-# Packages and publish outputs
-publish/
-pipelines/
+# OneDrive / sync metadata
+~*.tmp
+*.lnk
 
-# JetBrains Rider local history
+# JetBrains local history
 .idea/.idea.LocalHistory
 
-# Ignore JetBrains Rider caches
-.idea/**/workspace.xml
-
-# OneDrive cache/temp files
-*.lnk
+# Avoid committing secrets or local settings
+appsettings.Development.json
+secrets.json
