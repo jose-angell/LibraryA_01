@@ -12,9 +12,11 @@
 [Oo]bj/
 out/
 artifacts/
+.obj/
 
 # Visual Studio Code
 .vscode/
+.vs/
 
 # Visual Studio
 .vs/
@@ -84,3 +86,44 @@ desktop.ini
 # Avoid committing secrets or local settings
 appsettings.Development.json
 secrets.json
+
+## Additional ignores to avoid committing build artifacts and user-specific files
+# Compiled binaries and debug symbols
+*.dll
+*.exe
+*.pdb
+
+# Solution / IDE user files
+*.slnx.user
+*.sln.cache
+
+# Ignore solution-level packages folders (nested packages/ directories)
+**/packages/
+
+# Ignore IDE-created NuGet package directories
+.package*/
+
+
+# Tools
+.dotnet/
+.tools/
+.store/
+
+# .NET Aspire (si usa microservicios)
+.aspire/
+
+# Playwright / Pruebas de integración
+.playwright/
+playwright-report/
+test-results/
+
+# Node / Frontend (si su proyecto .NET tiene React/Angular/Blasor con npm)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+
+# Archivos de publicación local y contenedores
+deploy/
+.dockerignore
