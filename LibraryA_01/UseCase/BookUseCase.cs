@@ -12,13 +12,13 @@ namespace LibraryA_01.UseCase
         {
             _context = context;
         }
-        public async Task<BookDto> Create(CreateBookDto query)
+        public async Task<BookDto> Create(CreateBookDto request)
         {
             try
             {
-                var newBook = new Book(query.Title, query.Author, query.ISBN, query.Year, query.NumberOfPages, query.Available);
+                var newBook = new Book(request.Title, request.Author, request.ISBN, request.Year, request.NumberOfPages, request.Available);
 
-                _context.Books.AddAsync(newBook);
+                await _context.Books.AddAsync(newBook);
                 await _context.SaveChangesAsync();
 
                 return MapToDto(newBook);
@@ -28,16 +28,16 @@ namespace LibraryA_01.UseCase
                 throw new Exception($"Error creating book: {ex.Message}");
             }
         }
-        public async Task Update(UpdateBookDto query)
+        public async Task Update(UpdateBookDto request)
         {
             try
             {
-                var book = await _context.Books.FindAsync(query.Id);
+                var book = await _context.Books.FindAsync(request.Id);
                 if(book != null)
                 {
-                    throw new Exception($"Book with ID {query.Id} not found.");
+                    throw new Exception($"Book with ID {request.Id} not found.");
                 }
-                book.Update(query.Title, query.Author, query.ISBN, query.Year, query.NumberOfPages, query.Available);
+                book.Update(request.Title, request.Author, request.ISBN, request.Year, request.NumberOfPages, request.Available);
                 await _context.SaveChangesAsync();
 
             }catch(Exception ex)
