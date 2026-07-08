@@ -4,7 +4,7 @@ namespace LibraryA_01.Domain
 {
     public class Book
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
         public string Title { get; private set; }
         public string Author { get; private set; }
         public string ISBN { get; private set; }

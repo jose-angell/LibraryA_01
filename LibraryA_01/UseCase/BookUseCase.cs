@@ -14,81 +14,53 @@ namespace LibraryA_01.UseCase
         }
         public async Task<BookDto> Create(CreateBookDto request)
         {
-            try
-            {
-                var newBook = new Book(request.Title, request.Author, request.ISBN, request.Year, request.NumberOfPages, request.Available);
+            var newBook = new Book(request.Title, request.Author, request.ISBN, request.Year, request.NumberOfPages, request.Available);
 
-                await _context.Books.AddAsync(newBook);
-                await _context.SaveChangesAsync();
+            await _context.Books.AddAsync(newBook);
+            await _context.SaveChangesAsync();
 
-                return MapToDto(newBook);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error creating book: {ex.Message}");
-            }
+            return MapToDto(newBook);
         }
-        public async Task Update(UpdateBookDto request)
+        public async Task<string?> Update(Guid id, UpdateBookDto request)
         {
-            try
+            var book = await _context.Books.FindAsync(id);
+            if(book == null)
             {
-                var book = await _context.Books.FindAsync(request.Id);
-                if(book != null)
-                {
-                    throw new Exception($"Book with ID {request.Id} not found.");
-                }
-                book.Update(request.Title, request.Author, request.ISBN, request.Year, request.NumberOfPages, request.Available);
-                await _context.SaveChangesAsync();
-
-            }catch(Exception ex)
-            {
-                throw new Exception($"Error updating book: {ex.Message}");
+                return $"Book with ID {id} not found.";
             }
+            book.Update(request.Title, request.Author, request.ISBN, request.Year, request.NumberOfPages, request.Available);
+            await _context.SaveChangesAsync();
+            return null;
         }
-        public async Task Delete(Guid id)
+        public async Task<string?> Delete(Guid id)
         {
-            try
+            
+            var book = await _context.Books.FindAsync(id);
+            if(book == null)
             {
-                var book = await _context.Books.FindAsync(id);
-                if(book != null)
-                {
-                    throw new Exception($"Book with ID {id} not found.");
-                }
-                _context.Books.Remove(book);
-                await _context.SaveChangesAsync();
-            }catch(Exception ex)
-            {
-                throw new Exception($"Error deleting book: {ex.Message}");
+                return $"Book with ID {id} not found.";
             }
+            _context.Books.Remove(book);
+            await _context.SaveChangesAsync();
+            return null;
         }
         public async Task<IEnumerable<BookDto>> GetAll()
         {
-            try
-            {
-                var books = await _context.Books.ToListAsync();
-                return books.Select(MapToDto);
-            }catch(Exception ex)
-            {
-                throw new Exception($"Error retrieving books: {ex.Message}");
-            }
+            var books = await _context.Books.ToListAsync();
+            return books.Select(MapToDto);
         }
-        public async Task<BookDto> GetById(Guid id)
+        public async Task<BookDto?> GetById(Guid id)
         {
-            try
+            var book = await _context.Books.FindAsync(id);
+            if(book == null)
             {
-                var book = await _context.Books.FindAsync(id);
-                if(book == null)
-                {
-                    throw new Exception($"Book with ID {id} not found.");
-                }
-                return MapToDto(book);
-            }catch(Exception ex)
-            {
-                throw new Exception($"Error retrieving book: {ex.Message}");
+                return null;
             }
+            return MapToDto(book);
         }
         private static BookDto MapToDto(Book book) => new BookDto
         {
+            Id = book.Id,
             Title = book.Title,
             Author = book.Author,
             ISBN = book.ISBN,

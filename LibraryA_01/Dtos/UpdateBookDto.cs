@@ -4,9 +4,6 @@ namespace LibraryA_01.Dtos
 {
     public class UpdateBookDto
     {
-        [Required(ErrorMessage = "El Id es obligatorio")]
-        public Guid Id { get; set; }
-
         [Required(ErrorMessage = "El Titulo es obligatorio")]
         public string Title { get; set; }
 

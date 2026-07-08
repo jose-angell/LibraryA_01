@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LibraryA_01.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/books")]
     public class BookController : ControllerBase
     {
         private readonly BookUseCase _useCase;
@@ -14,14 +14,18 @@ namespace LibraryA_01.Controllers
             _useCase = useCase;
         }
 
-        [HttpGet("/id")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
-            if(id == Guid.Empty)
+            if (id == Guid.Empty)
             {
                 return BadRequest("El Id es obligatorio");
             }
             var book  = await _useCase.GetById(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
             return Ok(book);
         }
         [HttpGet]
@@ -33,31 +37,35 @@ namespace LibraryA_01.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateBookDto request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
             var book = await _useCase.Create(request);
             return CreatedAtAction(nameof(GetById), new { id = book.Id }, book);
         }
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] UpdateBookDto request)
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateBookDto request)
         {
-            if (!ModelState.IsValid)
+            if (id == Guid.Empty)
             {
-                return BadRequest(ModelState);
+                return BadRequest("El Id es obligatorio");
             }
-            await _useCase.Update(request);
+            var result = await _useCase.Update(id, request);
+            if (result != null)
+            {
+                return NotFound(result);
+            }
             return NoContent();
         }
-        [HttpDelete("/id")]
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             if (id == Guid.Empty)
             {
                 return BadRequest("El Id es obligatorio");
             }
-            await _useCase.Delete(id);
+            var result = await _useCase.Delete(id);
+            if (result != null)
+            {
+                return NotFound(result);
+            }
             return NoContent();
         }
     }
