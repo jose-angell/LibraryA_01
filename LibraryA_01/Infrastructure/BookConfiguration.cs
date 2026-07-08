@@ -15,7 +15,7 @@ namespace LibraryA_01.Infrastructure
             builder.Property(x => x.ISBN).HasColumnName("isbn").HasColumnType("varchar(20)").IsRequired();
             builder.Property(x => x.Year).HasColumnName("year").HasColumnType("int").IsRequired();
             builder.Property(x => x.NumberOfPages).HasColumnName("number_of_pages").HasColumnType("int").IsRequired();
-            builder.Property(x => x.Available).HasColumnName("available").HasColumnType("bit").IsRequired();
+            builder.Property(x => x.Available).HasColumnName("available").HasColumnType("boolean").IsRequired();
 
             builder.HasIndex(x =>x.ISBN ).IsUnique();
         }
